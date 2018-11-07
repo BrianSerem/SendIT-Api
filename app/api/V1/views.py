@@ -9,6 +9,41 @@ class GetOrders(Resource): #GetOrders
         return {"All Parcels": [order.serialize() for order in orders]}
 
 
+class GetSpecificOrder(Resource): #SpecificOrder
+    '''fetch a specific parcel order by id'''
+
+    def get(self, id):
+        '''get a specific order by id'''
+
+        order = Order().get_by_id(id)
+
+        if order:
+            return {"order": order.serialize()}, 200
+
+        return {"message": "Order not in our records"}, 404
+
+    def delete(self, id):
+        '''delete a specific order'''
+
+        order = Order().get_by_id(id)
+
+        if order:
+            orders.remove(order)
+            return {"message": "order deleted successfully"}, 200
+        return {"message": "Order not found"}, 404
+
+    def put(self, id):
+        '''approve an  a parcel order'''
+        order = Order().get_by_id(id)
+
+        if order:
+            if order.status != "Pending":
+                return {"message": "order {}".format(order.status)} "wait for approval", 200
+            order.status = "approved"
+            return {"message": "parcel order  approved"}, 200
+        return {"message": "order not in our records, place it"}, 404
+
+
 class CreateParcel(Resource): #PostParcel
     '''Create a new parcel order.'''
 
