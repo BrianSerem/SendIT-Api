@@ -76,3 +76,9 @@ class CreateParcel(Resource): #PostParcel
             orders.append(order)
             return {"message": "Order placed waiting for approval!"}, 201
         return {"message": "delivery to {}".format(order.destination) "is currently not available"}
+
+class CompletedOrders(Resource):
+    '''return a list of parcel orders completed by admin'''
+
+    def get(self):
+        return {"completed orders": [order.serialize() for order in orders if order.status == "completed"]}, 200
