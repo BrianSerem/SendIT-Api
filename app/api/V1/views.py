@@ -4,7 +4,12 @@ from .models import Order,orders, accepted_orders, destinations
 from utils import valid_destination_name, valid_origin_name
 
 
-class CreateParcel(Resource):
+class GetOrders(Resource): #GetOrders
+    def get(self):
+        return {"All Parcels": [order.serialize() for order in orders]}
+
+
+class CreateParcel(Resource): #PostParcel
     '''Create a new parcel order.'''
 
     def post(self):
