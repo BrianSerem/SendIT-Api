@@ -82,3 +82,20 @@ class CompletedOrders(Resource):
 
     def get(self):
         return {"completed orders": [order.serialize() for order in orders if order.status == "completed"]}, 200
+
+
+class DeclineOrder(Resource):
+    def put(self, id):
+        '''decline a specific order'''
+
+        order = Order().get_by_id(id)
+
+        if order:
+
+            if order.status != "Pending":
+                return {"message": "order already {}".format(order.status)}
+
+            order.status = "declined"
+            return {"message": "Order declined"}
+
+        return {"message": "Order not found"}, 404
