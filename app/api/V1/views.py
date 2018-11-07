@@ -99,3 +99,14 @@ class DeclineOrder(Resource):
             return {"message": "Order declined"}
 
         return {"message": "Order not found"}, 404
+
+class DeclinedOrders(Resource):
+    def get(self):
+        '''return all orders'''
+
+        return {
+            "declined orders": [
+                order.serialize() for order in orders
+                if order.status == "declined"
+            ]
+        }
